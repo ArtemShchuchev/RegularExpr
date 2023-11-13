@@ -2,13 +2,18 @@ cmake_minimum_required(VERSION 3.19)
 project(RegularExpr VERSION 1.0 LANGUAGES CXX)
 
 set(OUTPUT_NAME RegularExpr)
-set(HEADERS )
-set(SOURCES main.cpp)
+set(MYLIB_PATH ${PROJECT_SOURCE_DIR}/SecondFunk)
+set(HEADERS wordSearch/wordSearch.h
+			${MYLIB_PATH}/SecondaryFunction.h)
+set(SOURCES main.cpp
+			wordSearch/wordSearch.cpp
+			${MYLIB_PATH}/SecondaryFunction.cpp)
 # C/C++: доп. каталоги включаемых файлов (#include)
-include_directories($ENV{BOOST_ROOT})
+include_directories(${PROJECT_SOURCE_DIR}/wordSearch
+					${MYLIB_PATH}
+					$ENV{BOOST_ROOT})
 # Компоновщик: доп. каталоги библиотек
 link_directories($ENV{BOOST_ROOT}/stage/lib)
-
 
 add_executable(${OUTPUT_NAME} ${HEADERS} ${SOURCES})
 

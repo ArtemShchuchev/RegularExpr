@@ -1,9 +1,13 @@
-#include <iostream>
-#include <regex>
-#include <boost/locale.hpp>
+п»ї#include <iostream>
+#include "wordSearch.h"
+#include "SecondaryFunction.h"
 
 int main()
 {
+    setRuLocale();
+    consoleClear();
+
+    WordSearch words;
     std::string s;
     {
         s = "\
@@ -57,7 +61,7 @@ Content - Length : 1256\n\
         <body>\n\
             <div>\n\
                 <h1>Example Domain< / h1>\n\
-                <p>This domain is for use in illustrative examples in documents.You may use this\n\
+                <p>РџСЂРѕРІРµСЂРєР° РїСЂРѕРІРµСЂРєР° СЂСѓСЃСЃРєРёС… СЃР»РѕРІ This domain is for use in illustrative example in documents.You may use this\n\
                 domain in literature without prior coordination or asking for permission.< / p>\n\
                 <p><a href = \"https://www.iana.org/domains/example\">More information...< / a>< / p>\n\
                 <p><a href = \"https://www.wikipedia.org/\">Wikipedia< / a>< / p>\n\
@@ -66,61 +70,21 @@ Content - Length : 1256\n\
 < / html>";
     }
 
-    // Убрал пробельные символы [ \f\n\r\t\v]
-    std::regex wordRegex(R"(\s+)");
-    s = std::regex_replace(s, wordRegex, " ");
-    // Нашел body, извлек в str
-    wordRegex = R"(< ?body ?>(.+)< ?/ ?body>)";
-    std::sregex_token_iterator wordStart(s.begin(), s.end(), wordRegex, 1);
-    std::string str(*wordStart);
-    // Ищу ссылки
-    const std::regex url_re(R"!!(<\s*A\s+[^>]*href\s*=\s*"([^"]*)")!!", std::regex::icase);
-    std::vector<std::string> links{
-        std::sregex_token_iterator{str.begin(), str.end(), url_re, 1},
-        std::sregex_token_iterator{}
-    };
+    auto [wordAmount, links](words.getWordMap(s));
+
     uint32_t listNum(0);
     for (const auto& link : links) {
-        std::cout << ++listNum << ") " << link << '\n';
+        std::wcout << ++listNum << ") " << ansi2wideUtf(link) << '\n';
     }
-    std::cout << '\n';
-
-    // Нашел title, присоеденил к str
-    wordRegex = R"(< ?title ?>(.+)< ?/ ?title>)";
-    wordStart = std::sregex_token_iterator(s.begin(), s.end(), wordRegex, 1);
-    str += *wordStart;
-
-    // Убрал токены
-    wordRegex = R"(<[^>]*>)";
-    str = std::regex_replace(str, wordRegex, "");
-    // Убрал знаки пунктуации
-    wordRegex = R"(\W)";
-    str = std::regex_replace(str, wordRegex, "  ");
-    // Строку в нижний регистр
-    // Create system default locale
-    boost::locale::generator gen;
-    std::locale loc = gen("");
-    // Make it system global
-    std::locale::global(loc);
-    str = boost::locale::to_lower(str);
-
-    // Разделяю на слова от 3х до 32х символов, добавляю в словарь
-    std::unordered_map<std::string, int> wordAmount;
-    
-    std::stringstream stream(str);
-    std::string word;
-    while (std::getline(stream, word, ' ')) {
-        if (word.size() > 2 && word.size() < 33)
-            ++wordAmount[word];
-    }
+    std::wcout << '\n';
 
     listNum = 0;
     for (const auto& [word, amount] : wordAmount)
     {
-        std::cout << ++listNum << ") " << word << " - " << amount << '\n';
+        std::wcout << ++listNum << ") " << ansi2wideUtf(word) << " - " << amount << '\n';
     }
 
-    // Слова от 3х до 32х символов
+    // РЎР»РѕРІР° РѕС‚ 3С… РґРѕ 32С… СЃРёРјРІРѕР»РѕРІ
     /*
     wordRegex = R"(\s(\w{3,32})\s)";
     std::vector<std::string> words{
@@ -133,5 +97,5 @@ Content - Length : 1256\n\
     }
     */
 
-    return 0;
+    return EXIT_SUCCESS;
 }
