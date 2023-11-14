@@ -63,7 +63,7 @@ Content - Length : 1256\n\
                 <h1>Example Domain< / h1>\n\
                 <p>Проверка проверка русских слов word45 слово45 45687 56apple 56яблоко This domain is for use in illustrative examples in documents.You may use this\n\
                 domain in literature without prior coordination or asking for permission.< / p>\n\
-                <p><a href = \"https://www.iana.org/domains/example\">More information...< / a>< / p>\n\
+                <p><a href = \"http://www.iana.org/domains/example\">More information...< / a>< / p>\n\
                 <p><a href = \"https://www.wikipedia.org/\">Wikipedia< / a>< / p>\n\
             < / div>\n\
         < / body>\n\
