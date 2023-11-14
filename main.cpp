@@ -8,9 +8,9 @@ int main()
     consoleClear();
 
     WordSearch words;
-    std::string s;
+    std::wstring s;
     {
-        s = "\
+        s = L"\
 HTTP/1.1 200 OK\n\
 Accept - Ranges: bytes\n\
 Age : 522097\n\
@@ -61,7 +61,7 @@ Content - Length : 1256\n\
         <body>\n\
             <div>\n\
                 <h1>Example Domain< / h1>\n\
-                <p>Проверка проверка русских слов This domain is for use in illustrative example in documents.You may use this\n\
+                <p>Проверка проверка русских слов word45 слово45 45687 56apple 56яблоко This domain is for use in illustrative examples in documents.You may use this\n\
                 domain in literature without prior coordination or asking for permission.< / p>\n\
                 <p><a href = \"https://www.iana.org/domains/example\">More information...< / a>< / p>\n\
                 <p><a href = \"https://www.wikipedia.org/\">Wikipedia< / a>< / p>\n\
@@ -74,14 +74,14 @@ Content - Length : 1256\n\
 
     uint32_t listNum(0);
     for (const auto& link : links) {
-        std::wcout << ++listNum << ") " << ansi2wideUtf(link) << '\n';
+        std::wcout << ++listNum << ") " << link << '\n';
     }
     std::wcout << '\n';
 
     listNum = 0;
     for (const auto& [word, amount] : wordAmount)
     {
-        std::wcout << ++listNum << ") " << ansi2wideUtf(word) << " - " << amount << '\n';
+        std::wcout << ++listNum << ") " << word << " - " << amount << '\n';
     }
 
     // Слова от 3х до 32х символов
