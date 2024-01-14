@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include "wordSearch.h"
 #include "SecondaryFunction.h"
+#include "Types.h"
 
 int main()
 {
@@ -70,11 +71,11 @@ Content - Length : 1256\n\
 < / html>";
     }
 
-    auto [wordAmount, links](words.getWordMap(s));
+    auto [wordAmount, links](words.getWordLink(s, 1));
 
     uint32_t listNum(0);
     for (const auto& link : links) {
-        std::wcout << ++listNum << ") " << link << '\n';
+        std::wcout << ++listNum << ") " << utf82wideUtf(link.link_str) << '\n';
     }
     std::wcout << '\n';
 
