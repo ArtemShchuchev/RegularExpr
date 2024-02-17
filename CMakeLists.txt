@@ -10,12 +10,20 @@ set(SOURCES main.cpp
 			${MYLIB_PATH}/SecondaryFunction.cpp)
 # C/C++: доп. каталоги включаемых файлов (#include)
 include_directories(${PROJECT_SOURCE_DIR}/wordSearch
-					${MYLIB_PATH}
-					$ENV{BOOST_ROOT})
+					${MYLIB_PATH})
+
+# Boost:
 # Компоновщик: доп. каталоги библиотек
-link_directories($ENV{BOOST_ROOT}/stage/lib)
+link_directories($ENV{BOOST_ROOT}/lib)
+find_package(Boost 1.80.0 REQUIRED)
+if(NOT Boost_FOUND)
+	message(FATAL_ERROR "Could not find Boost")
+endif()
 
 add_executable(${OUTPUT_NAME} ${HEADERS} ${SOURCES})
+
+target_include_directories(${OUTPUT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(${OUTPUT_NAME} PRIVATE ${Boost_LIBRARIES})
 
 #[[ if (Visual Studio)
 	настраиваю в качестве запускаемого проекта

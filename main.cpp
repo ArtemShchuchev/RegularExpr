@@ -1,6 +1,8 @@
 ﻿#include <iostream>
+#include <chrono>
 #include "wordSearch.h"
 #include "SecondaryFunction.h"
+
 
 int main()
 {
@@ -70,11 +72,20 @@ Content - Length : 1256\n\
 < / html>";
     }
 
-    auto [wordAmount, links](words.getWordMap(s));
+    std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+    auto [wordAmount, links](words.getWordLink(s, 3));
+    auto end = std::chrono::steady_clock::now();
+    std::chrono::duration<double, std::milli> delta = end - start;
+    double workTime = delta.count();
 
+    std::wcout << L"Найдено ссылок: " << links.size()
+        << L"\nНайдено слов: " << wordAmount.size()
+        << L"\nПотрачено времени: " << workTime << L"ms\n";
+
+    /*
     uint32_t listNum(0);
     for (const auto& link : links) {
-        std::wcout << ++listNum << ") " << link << '\n';
+        std::wcout << ++listNum << ") " << utf82wideUtf(link.link_str) << '\n';
     }
     std::wcout << '\n';
 
@@ -83,6 +94,7 @@ Content - Length : 1256\n\
     {
         std::wcout << ++listNum << ") " << word << " - " << amount << '\n';
     }
+    */
 
     // Слова от 3х до 32х символов
     /*
