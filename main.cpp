@@ -69,7 +69,7 @@ Content - Length : 1256\n\
                 <p><a href = \"http://www.iana.org/domains/example\">More information...< / a>< / p>\n\
                 <p><a href = \"https://www.wikipedia.org/\">Wikipedia< / a>< / p>\n\
             < / div>\n\
-        < / body>\n\
+        </body>\n\
 < / html>";
     }
 
