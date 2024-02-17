@@ -2,6 +2,7 @@
 #include <chrono>
 #include "wordSearch.h"
 #include "SecondaryFunction.h"
+#include "Types.h"
 
 
 int main()

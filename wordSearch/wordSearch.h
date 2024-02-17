@@ -1,14 +1,12 @@
 ﻿#pragma once
 
 #include <iostream>
-#include <unordered_map>
 #include <regex>
 #include <boost/locale.hpp> // перед "SecondaryFunction.h"
 #include "SecondaryFunction.h"
+#include "../Types.h"
 
-
-using WordMap = std::unordered_map<std::wstring, int>;
-
+//using WordMap = std::unordered_map<std::wstring, int>;
 using Link = struct {
 	std::string link_str;
 	unsigned int recLevel;
@@ -30,5 +28,6 @@ private:
 		number_reg;
 
 public:
+	WordSearch() = default;
 	std::pair<WordMap, LinkList> getWordLink(std::wstring page, unsigned int recLevel);
 };
