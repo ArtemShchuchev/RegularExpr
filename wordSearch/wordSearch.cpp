@@ -3,8 +3,10 @@
 const std::wregex
     WordSearch::space_reg{ LR"(\s+)" }, // [ \f\n\r\t\v]
     WordSearch::title_reg{ LR"(< ?title ?>(.+)< ?/ ?title>)" },
-    //WordSearch::body_reg{ LR"(< ?body[^>]*>(.+)< ?/ ?body>)" },
-    WordSearch::body_reg{ LR"(< ?body[^>]*>([\s[:punct:]\w]+)< ?/ ?body>)" },
+    //WordSearch::body_reg{ LR"(<body[^>]*>(.+)</body>)" },
+    //WordSearch::body_reg{ LR"(<body[^>]*>([\s[:punct:]\w]+)body>)" },
+    //WordSearch::body_reg{ LR"(<body[^>]*>([[:space:][:print:]]+)</body>)" }, // искать 1 (без токенов body)
+    WordSearch::body_reg{ LR"(<body([[:space:][:print:]]+)/body>)" },   // искать 0 (с токенами body)
     //WordSearch::url_reg{ LR"!!(<\s*A\s+[^>]*href\s*=\s*"([^"]*)")!!", std::regex::icase },
     //WordSearch::url_reg{ LR"!!(<\s*A\s+href\s*=\s*"([^"]*)")!!", std::regex::icase },
     //WordSearch::url_reg{ LR"!!(<\s*A\s+[^>]*href\s*=\s*"(http[^"]*)")!!", std::regex::icase },
@@ -33,7 +35,7 @@ std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned
     //std::wcout << "title: " << title << '\n';
     // Нашел body
     //std::wcout << "page: " << page << '\n';
-    it = std::wsregex_token_iterator(page.begin(), page.end(), body_reg, 1);
+    it = std::wsregex_token_iterator(page.begin(), page.end(), body_reg, 0);
     if (it != std::wsregex_token_iterator{}) page = *it;
     else page.clear();
     //std::wcout << "body: " << page << '\n';
