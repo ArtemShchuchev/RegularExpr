@@ -65,9 +65,11 @@ Content - Length : 1256\n\
             <div>\n\
                 <h1>Example Domain< / h1>\n\
                 <p>Проверка проверка русских слов word45 слово45 45687 56apple 56яблоко This domain is for use in illustrative examples in documents.You may use this\n\
-                domain in literature without prior coordination or asking for permission.< / p>\n\
-                <p><a href = \"http://www.iana.org/domains/example\">More information...< / a>< / p>\n\
-                <p><a href = \"https://www.wikipedia.org/\">Wikipedia< / a>< / p>\n\
+                domain in literature without prior coordination or asking മലയാളം for permission.< / p>\n\
+                <p><a href=\"http://www.iana.org/domains/example\">More information...</a>< / p>\n\
+                <p><a href=\"http://www.iana.org/domains/മലയാളം\">information...</a>< / p>\n\
+                <a href=\"https://ru.wikibooks.org/wiki/%d0%97%d0%b0%d0%b3%d0%bb%d0%b0%d0%b2%d0%bd%d0%b0%d1%8f_%d1%81%d1%82%d1%80%d0%b0%d0%bd%d0%b8%d1%86%d0%b0\" hreflang=\"ru\"><span>викиучебник</span></a>\n\
+                <p><a href=\"https://www.wikipedia.org/\">Wikipedia</a>< / p>\n\
             < / div>\n\
         </body>\n\
 < / html>";
@@ -83,7 +85,6 @@ Content - Length : 1256\n\
         << L"\nНайдено слов: " << wordAmount.size()
         << L"\nПотрачено времени: " << workTime << L"ms\n";
 
-    /*
     uint32_t listNum(0);
     for (const auto& link : links) {
         std::wcout << ++listNum << ") " << utf82wideUtf(link.link_str) << '\n';
@@ -95,6 +96,7 @@ Content - Length : 1256\n\
     {
         std::wcout << ++listNum << ") " << word << " - " << amount << '\n';
     }
+    /*
     */
 
     // Слова от 3х до 32х символов

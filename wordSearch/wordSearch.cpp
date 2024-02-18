@@ -1,20 +1,22 @@
 ﻿#include "wordSearch.h"
 
 const std::wregex
-    WordSearch::space_reg{ LR"(\s+)" }, // [ \f\n\r\t\v]
+    //WordSearch::space_reg{ LR"(\s+)" }, // [ \f\n\r\t\v]
     WordSearch::title_reg{ LR"(< ?title ?>(.+)< ?/ ?title>)" },
     //WordSearch::body_reg{ LR"(<body[^>]*>(.+)</body>)" },
     //WordSearch::body_reg{ LR"(<body[^>]*>([\s[:punct:]\w]+)body>)" },
     //WordSearch::body_reg{ LR"(<body[^>]*>([[:space:][:print:]]+)</body>)" }, // искать 1 (без токенов body)
-    WordSearch::body_reg{ LR"(<body([[:space:][:print:]]+)/body>)" },   // искать 0 (с токенами body)
+    //WordSearch::body_reg{ LR"(<body([_%[:space:][:print:]]+)/body>)" },   // искать 0 (с токенами body)
+    //WordSearch::body_reg{ LR"(<body([\%^S2]+)(/body>))" },   // искать 0 (с токенами body)
     //WordSearch::url_reg{ LR"!!(<\s*A\s+[^>]*href\s*=\s*"([^"]*)")!!", std::regex::icase },
     //WordSearch::url_reg{ LR"!!(<\s*A\s+href\s*=\s*"([^"]*)")!!", std::regex::icase },
     //WordSearch::url_reg{ LR"!!(<\s*A\s+[^>]*href\s*=\s*"(http[^"]*)")!!", std::regex::icase },
-    WordSearch::url_reg{ LR"!!(<\s?a href\s?=\s?"(http[^"]*))!!" },
+    //WordSearch::url_reg{ LR"!!(<\s?a href\s?=\s?"(http[^"]*))!!" },
+    WordSearch::url_reg{ LR"!!(<a href="(http[^"]+))!!" },
     WordSearch::token_reg{ LR"(<[^>]*>)" },
-    WordSearch::punct_reg{ LR"([[:punct:]])" },
-    WordSearch::word_reg{ LR"([^[:alpha:]]?([[:alpha:]]+)[^[:alpha:]]?)" },
-    WordSearch::number_reg{ LR"(\w*[0-9]\w*)" };
+    //WordSearch::punct_reg{ LR"([[:punct:]])" },
+    WordSearch::word_reg{ LR"([^[:alpha:]]?([[:alpha:]]+)[^[:alpha:]]?)" };
+    //WordSearch::number_reg{ LR"(\w*[0-9]\w*)" };
 
 std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned int recLevel)
 {
@@ -25,7 +27,7 @@ std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned
     // Make it system global
     std::locale::global(loc);
     page = boost::locale::to_lower(page);
-    
+
     // Убрал пробельные символы [ \f\n\r\t\v]
     //page = std::regex_replace(page, space_reg, L" ");
     // Нашел title
@@ -33,12 +35,19 @@ std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned
     std::wstring title;
     if (it != std::wsregex_token_iterator{}) title = *it;
     //std::wcout << "title: " << title << '\n';
+
+
+
     // Нашел body
     //std::wcout << "page: " << page << '\n';
-    it = std::wsregex_token_iterator(page.begin(), page.end(), body_reg, 0);
-    if (it != std::wsregex_token_iterator{}) page = *it;
-    else page.clear();
+    //it = std::wsregex_token_iterator(page.begin(), page.end(), body_reg, 0);
+    //if (it != std::wsregex_token_iterator{}) page = *it;
+    //else page.clear();
+    page = { (page.begin() + page.find(L"<body") + 6),
+        (page.begin() + page.rfind(L"</body")) };
+
     //std::wcout << "body: " << page << '\n';
+
     // Ищу ссылки
     LinkList links;
     auto it_start(std::wsregex_token_iterator{ page.begin(), page.end(), url_reg, 1 });
