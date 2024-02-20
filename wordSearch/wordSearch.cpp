@@ -13,7 +13,7 @@ const std::wregex
     //WordSearch::url_reg{ LR"!!(<\s*A\s+[^>]*href\s*=\s*"(http[^"]*)")!!", std::regex::icase },
     //WordSearch::url_reg{ LR"!!(<\s?a href\s?=\s?"(http[^"]*))!!" },
     //WordSearch::url_reg{ LR"!!(<a href="(http[^"]+))!!" },
-    //WordSearch::url_reg{ LR"!!(<a href="(http[^"]+)")!!" },
+    WordSearch::url_reg{ LR"!!(<a href="(ht[^"]+)")!!" },
     WordSearch::token_reg{ LR"(<[^>]*>)"},
     //WordSearch::punct_reg{ LR"([[:punct:]])" },
     //WordSearch::word_reg{ LR"([^[:alpha:]]?([[:alpha:]]+)[^[:alpha:]]?)" };
@@ -54,17 +54,16 @@ std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned
 
     // Ищу ссылки
     LinkList links;
-    //auto it_start(std::wsregex_token_iterator{ page.begin(), page.end(), url_reg, 1 });
-    //auto it_end(std::wsregex_token_iterator{});
+    auto it_start(std::wsregex_token_iterator{ page.begin(), page.end(), url_reg, 1 });
+    auto it_end(std::wsregex_token_iterator{});
     --recLevel; // следующая глубина погружения
-    /*
     for (auto it(it_start); it != it_end; ++it)
     {
         std::wstring link_ws(*it);
         std::string link_str(wideUtf2utf8(link_ws));
         links.push_back( { link_str, recLevel } );
     }
-    */
+    /*
     size_t start(0), end(0);
     while (true)
     {
@@ -80,14 +79,7 @@ std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned
         }
         else break;
     }
-    
-
-    //if (found != string::npos)
-
-    //std::wcout << "url: " << l << '\n';
-
-
-
+    */
 
 
     // добавил к body, title
@@ -97,8 +89,8 @@ std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned
 
     // Ищу слова
     WordMap wordmap;
-    auto it_start = std::wsregex_token_iterator{ page.begin(), page.end(), word_reg, 1 };
-    auto it_end = std::wsregex_token_iterator{};
+    it_start = std::wsregex_token_iterator{ page.begin(), page.end(), word_reg, 1 };
+    it_end = std::wsregex_token_iterator{};
     std::wstring word;
     for (auto it(it_start); it != it_end; ++it) {
         word = *it;
@@ -107,6 +99,7 @@ std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned
     }
     /*
 
+    // ищет только латиницу (
     std::wstring word;
     for (auto it(page.begin()); it < page.end(); ) {
         if (isalpha(*it)) {
@@ -120,10 +113,20 @@ std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned
         }
         else ++it;
     }
+
+    // ищет только латиницу (
+    std::wstring word;
+    for (auto ch : page) {
+        if (isalpha(ch)) {
+            word += ch;
+        }
+        else {
+            if (word.size() > 2 && word.size() < 33)
+                ++wordmap[word];
+            word.clear();
+        }
+    }
     */
-
-
-
 
     /*
     // Убрал знаки пунктуации
