@@ -98,14 +98,12 @@ std::pair<WordMap, LinkList> WordSearch::getWordLink(std::wstring page, unsigned
     page = std::regex_replace(page, token_reg, L" ");
 
     // Ищу слова
-    WordMap wordmap;
     auto it_start = std::wsregex_token_iterator{ page.begin(), page.end(), word_reg, 1 };
     auto it_end = std::wsregex_token_iterator{};
-    std::wstring word;
+    WordMap wordmap;
     for (auto it(it_start); it != it_end; ++it) {
-        word = *it;
-        if (word.size() > 2 && word.size() < 33)
-            ++wordmap[word];
+        if ((*it).length() > 2 && (*it).length() < 33)
+            ++wordmap[*it];
     }
     /*
 
